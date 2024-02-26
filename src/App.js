@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import Tabs from './component/Tabs';
+import Gifs from './component/gifs';
+import Stickers from './component/Stickers';
+import SearchComponent from './component/search';
 
 function App() {
+  const data = [{
+    name: "Gifs",
+    component: <Gifs />
+  }, {
+    name: "Stickers",
+    component: <Stickers />
+  },{
+    name: "Search",
+    component: <SearchComponent />
+  }]
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Tabs tabData ={data} useHorizontalLayout/>
     </div>
   );
 }
