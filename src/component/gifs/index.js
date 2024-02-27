@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getApiCall } from "../../apicalls";
 import styles from "./gifs.module.css";
-import Shimmer from "../shimmer";
-import LoadImage from "../loadImage";
+import Display from "../display";
+import { getAPIUrl } from "../../apicalls/api-constant";
 
 const Gifs = () => {
   const [data, setData] = useState([]);
@@ -12,7 +12,7 @@ const Gifs = () => {
 
   const getData = () => {
     setLoading(true);
-    getApiCall(`https://api.giphy.com/v1/gifs/trending?api_key=tJ0N8u3VF5YYPOpQQOuwm16Dv6InCizF&limit=${perPage}&offset=${(page - 1)}&rating=g&bundle=messaging_non_clips`).
+    getApiCall(getAPIUrl('getGifCall', {perPage: perPage, page:page})).
       then((res) => {
         setData(res.data);
         setLoading(false);
@@ -42,14 +42,7 @@ const Gifs = () => {
       <button onClick={handleNextPage}>Next</button>
     </div>
     {loading && <div className={styles.loaderContainer}>Loading...</div>}
-    <div className={styles.container}>
-      {data.map((item) => (
-        <div key={item.id} className={styles.gridItem}>
-          {loading && (<Shimmer />)}
-          {!loading && <LoadImage src={item.images.original.url}/> }
-        </div>
-      ))}
-    </div>
+    <Display data={data} loading={loading}/>
   </div>
   );
 }

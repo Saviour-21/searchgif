@@ -2,19 +2,26 @@ import React, { useEffect, useState } from "react";
 import styles from "./search.module.css";
 import { debouncing } from "../../utils";
 import { getApiCall } from "../../apicalls";
+import Display from "../display";
+import { getAPIUrl } from "../../apicalls/api-constant";
 
 const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const fetchData = (query) => {
-    getApiCall(`https://api.giphy.com/v1/gifs/search?api_key=tJ0N8u3VF5YYPOpQQOuwm16Dv6InCizF&q=${query}&limit=25&offset=0&rating=g&lang=en&bundle=messaging_non_clips`).then((res)=>{
+    setLoading(true);
+    getApiCall(getAPIUrl('getSearchCall', {query: query})).then((res)=>{
         setData(res.data);
+        setLoading(false);
     }).catch((err)=>{
-        console.log("res", err);
+        console.error(err);
+        setLoading(false);
     })
   }
   useEffect(() => {
-    console.log("searchQuery", searchQuery);
+    setData([]);
     fetchData(searchQuery);
   }, [searchQuery]);
 
@@ -31,11 +38,7 @@ const SearchComponent = () => {
         />
       </div>
 
-      <div className={styles.resultContainer}>
-          {data.map((item)=>(
-            <img src={`${item.images.original.url}`} alt=""/>
-          ))}
-        </div>
+      <Display data={data} loading={loading}/>
     </div>
   );
 };
