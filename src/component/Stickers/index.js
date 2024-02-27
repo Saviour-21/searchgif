@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { getApiCall } from "../../apicalls";
 import styles from "./stickers.module.css";
 import Shimmer from "../shimmer";
+import LoadImage from "../loadImage";
 
 const Stickers = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(20); 
+  const [perPage, setPerPage] = useState(10); 
 
   const getData = () => {
     setLoading(true);
-    getApiCall(`https://api.giphy.com/v1/stickers/trending?api_key=tJ0N8u3VF5YYPOpQQOuwm16Dv6InCizF&limit=${perPage}&offset=${(page - 1) * perPage}&rating=g&bundle=messaging_non_clips`)
+    getApiCall(`https://api.giphy.com/v1/stickers/trending?api_key=tJ0N8u3VF5YYPOpQQOuwm16Dv6InCizF&limit=${perPage}&offset=${(page - 1)}&rating=g&bundle=messaging_non_clips`)
       .then((res) => {
         setData(res.data);
         setLoading(false);
@@ -45,7 +46,7 @@ const Stickers = () => {
         {data.map((item) => (
           <div key={item.id} className={styles.gridItem}>
             {loading && (<Shimmer />)}
-            {!loading && <img src={`${item.images.original.url}`} alt="" />}
+            {!loading && <LoadImage src={item.images.original.url}/> }
           </div>
         ))}
       </div>

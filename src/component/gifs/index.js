@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getApiCall } from "../../apicalls";
 import styles from "./gifs.module.css";
 import Shimmer from "../shimmer";
+import LoadImage from "../loadImage";
 
 const Gifs = () => {
   const [data, setData] = useState([]);
@@ -11,7 +12,7 @@ const Gifs = () => {
 
   const getData = () => {
     setLoading(true);
-    getApiCall(`https://api.giphy.com/v1/gifs/trending?api_key=tJ0N8u3VF5YYPOpQQOuwm16Dv6InCizF&limit=${perPage}&offset=${(page - 1) * perPage}&rating=g&bundle=messaging_non_clips`).
+    getApiCall(`https://api.giphy.com/v1/gifs/trending?api_key=tJ0N8u3VF5YYPOpQQOuwm16Dv6InCizF&limit=${perPage}&offset=${(page - 1)}&rating=g&bundle=messaging_non_clips`).
       then((res) => {
         setData(res.data);
         setLoading(false);
@@ -36,23 +37,20 @@ const Gifs = () => {
 
   return (
     <div>
-      <div className={styles.navButtons}>
-        <button onClick={handlePrevPage} disabled={page === 1}>Previous</button>
-        <button onClick={handleNextPage}>Next</button>
-      </div>
-      {loading && <div className={styles.loaderContainer}>Loading...</div>}
-      <div className={styles.container}>
-        {data.map((item) => (
-          // <div key={item.id} className={styles.gridItem}>
-          <>
-            {loading && (<Shimmer />)}
-            {!loading && <img src={`${item.images.original.url}`} alt="" />}
-          </>
-            
-          // </div>
-        ))}
-      </div>
+    <div className={styles.navButtons}>
+      <button onClick={handlePrevPage} disabled={page === 1}>Previous</button>
+      <button onClick={handleNextPage}>Next</button>
     </div>
+    {loading && <div className={styles.loaderContainer}>Loading...</div>}
+    <div className={styles.container}>
+      {data.map((item) => (
+        <div key={item.id} className={styles.gridItem}>
+          {loading && (<Shimmer />)}
+          {!loading && <LoadImage src={item.images.original.url}/> }
+        </div>
+      ))}
+    </div>
+  </div>
   );
 }
 

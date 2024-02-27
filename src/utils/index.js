@@ -1,4 +1,4 @@
-export const debouncing = (fn, delay=1000) => {
+export const debouncing = (fn, delay=250) => {
     let id;
     return function(...args){
         clearTimeout(id);
