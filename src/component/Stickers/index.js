@@ -8,7 +8,7 @@ const Stickers = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10); 
+  const [perPage, setPerPage] = useState(25); 
 
   const getData = () => {
     setLoading(true);
